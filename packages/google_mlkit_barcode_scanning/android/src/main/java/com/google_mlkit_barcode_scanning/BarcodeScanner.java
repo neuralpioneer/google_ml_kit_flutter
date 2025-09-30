@@ -58,7 +58,8 @@ public class BarcodeScanner implements MethodChannel.MethodCallHandler {
             for (int i = 1; i < formatList.size(); i++) {
                 array[i] = formatList.get(i);
             }
-            barcodeScannerOptions = new BarcodeScannerOptions.Builder().setBarcodeFormats(formatList.get(0), array).build();
+            barcodeScannerOptions = new BarcodeScannerOptions.Builder().setBarcodeFormats(formatList.get(0), array)
+                    .build();
         } else {
             barcodeScannerOptions = new BarcodeScannerOptions.Builder().setBarcodeFormats(formatList.get(0)).build();
         }
@@ -67,8 +68,11 @@ public class BarcodeScanner implements MethodChannel.MethodCallHandler {
 
     private void handleDetection(MethodCall call, final MethodChannel.Result result) {
         Map<String, Object> imageData = call.argument("imageData");
-        InputImage inputImage = InputImageConverter.getInputImageFromData(imageData, context, result);
-        if (inputImage == null) return;
+        InputImageConverter converter = new InputImageConverter();
+        InputImage inputImage = converter.getInputImageFromData(imageData, context, result);
+        if (inputImage == null) {
+            return;
+        }
 
         String id = call.argument("id");
         com.google.mlkit.vision.barcode.BarcodeScanner barcodeScanner = instances.get(id);
@@ -190,8 +194,10 @@ public class BarcodeScanner implements MethodChannel.MethodCallHandler {
                         barcodeList.add(barcodeMap);
                     }
                     result.success(barcodeList);
-                })
-                .addOnFailureListener(e -> result.error("BarcodeDetectorError", e.toString(), null));
+                }).addOnFailureListener(e -> result.error("BarcodeDetectorError", e.toString(), e))
+                // Closing is necessary for both success and failure.
+                .addOnCompleteListener(r -> converter.close());
+
     }
 
     private void addPoints(Point[] cornerPoints, List<Map<String, Integer>> points) {
@@ -205,7 +211,9 @@ public class BarcodeScanner implements MethodChannel.MethodCallHandler {
 
     private Map<String, Integer> getBoundingPoints(@Nullable Rect rect) {
         Map<String, Integer> frame = new HashMap<>();
-        if (rect == null) return frame;
+        if (rect == null) {
+            return frame;
+        }
         frame.put("left", rect.left);
         frame.put("right", rect.right);
         frame.put("top", rect.top);
@@ -216,7 +224,9 @@ public class BarcodeScanner implements MethodChannel.MethodCallHandler {
     private void closeDetector(MethodCall call) {
         String id = call.argument("id");
         com.google.mlkit.vision.barcode.BarcodeScanner barcodeScanner = instances.get(id);
-        if (barcodeScanner == null) return;
+        if (barcodeScanner == null) {
+            return;
+        }
         barcodeScanner.close();
         instances.remove(id);
     }
