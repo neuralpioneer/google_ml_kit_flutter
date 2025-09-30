@@ -153,7 +153,7 @@ public class InputImageConverter implements AutoCloseable {
                         vBuffer.put(data, vOffset, (width * height) / 4);
                         return InputImage.fromMediaImage(image, rotationDegrees);
                     }
-                    result.error("InputImageConverterError", "ImageFormat is not supported.", null);
+                    result.error("InputImageConverterError", "Roqqu ImageFormat is not supported.", null);
                     return null;
                 } catch (Exception e) {
                     Log.e("ImageError", "Getting Image failed");
