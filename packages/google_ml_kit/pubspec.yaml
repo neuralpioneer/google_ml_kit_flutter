@@ -3,6 +3,7 @@ description: "A Flutter plugin to use all APIs from Google's standalone ML Kit f
 version: 0.20.0
 homepage: https://github.com/flutter-ml/google_ml_kit_flutter
 repository: https://github.com/flutter-ml/google_ml_kit_flutter/tree/master/packages/google_ml_kit
+publish_to: 'none'
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
@@ -13,7 +14,10 @@ dependencies:
     sdk: flutter
 
   # Vision APIs
-  google_mlkit_commons: ^0.11.0
+  google_mlkit_commons:
+    git:
+      path: packages/google_mlkit_commons
+      url: .
   google_mlkit_barcode_scanning: ^0.14.1
   google_mlkit_digital_ink_recognition: ^0.14.1
   google_mlkit_face_detection: ^0.13.1
