@@ -15,9 +15,7 @@ dependencies:
 
   # Vision APIs
   google_mlkit_commons:
-    git:
-      path: packages/google_mlkit_commons
-      url: .
+    path: ../google_mlkit_commons
   google_mlkit_barcode_scanning: ^0.14.1
   google_mlkit_digital_ink_recognition: ^0.14.1
   google_mlkit_face_detection: ^0.13.1
