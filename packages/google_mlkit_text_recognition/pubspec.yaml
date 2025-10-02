@@ -16,6 +16,7 @@ dependencies:
     git:
       url: https://github.com/flutter-ml/google_ml_kit_flutter.git
       path: packages/google_mlkit_commons
+      ref: develop
 
 dev_dependencies:
   flutter_test:
